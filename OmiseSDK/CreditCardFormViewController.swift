@@ -163,9 +163,14 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     private var _selectMonth : Int!
     private var _selectYear : Int!
     private var _secureCode : String!
+    private var _isSubmit : Bool = false
     
     public func sendBack(){
         //
+    }
+    
+    public var isSubmit : Bool{
+        get{return _isSubmit}
     }
     
     public var cardNumber : String {
@@ -447,6 +452,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
             switch result {
             case let .success(token):
                 print("Credit Card Form's Request succeed \(token.id), trying to notify the delegate")
+                self?._isSubmit = true
                 self?.dismiss(animated: true,completion: nil)
             case let .failure(err):
                 strongSelf.handleError(err)
