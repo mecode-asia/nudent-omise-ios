@@ -163,6 +163,35 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     private var _selectMonth : Int!
     private var _selectYear : Int!
     private var _secureCode : String!
+    private var _oldUIView : UIViewController!,_nowUIView : UIViewController!
+    private var _selfUI : UIWindow!
+    
+    var oldUIView : UIViewController{
+        set(value){
+            _oldUIView = value
+        }
+        get{
+            return _oldUIView
+        }
+    }
+    
+    var nowUIView : UIViewController{
+        set(value){
+            _nowUIView = value
+        }
+        get{
+            return _nowUIView
+        }
+    }
+    
+    var selfUI : UIWindow{
+        set(value){
+            _selfUI = value
+        }
+        get{
+            return _selfUI
+        }
+    }
     
     var cardNumber : String {
         get{ return _cardNumber }
@@ -182,6 +211,13 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     
     var secureCode: String{
         get{ return _secureCode }
+    }
+    
+    
+    
+    func closeAction(){
+        oldUIView = nowUIView
+        selfUI.makeKeyAndVisible()
     }
     
     @IBOutlet var requestingIndicatorView: UIActivityIndicatorView!
@@ -442,7 +478,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
             switch result {
             case let .success(token):
                 print("Credit Card Form's Request succeed \(token.id), trying to notify the delegate")
-                self?.navigationController?.popViewController(animated: true)
+                self?.closeAction()
             case let .failure(err):
                 strongSelf.handleError(err)
             }
