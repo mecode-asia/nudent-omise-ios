@@ -166,7 +166,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     private var _oldUIView : UIViewController!,_nowUIView : UIViewController!
     private var _selfUI : UIWindow!
     
-    var oldUIView : UIViewController{
+    public var oldUIView : UIViewController{
         set(value){
             _oldUIView = value
         }
@@ -175,7 +175,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
         }
     }
     
-    var nowUIView : UIViewController{
+    public var nowUIView : UIViewController{
         set(value){
             _nowUIView = value
         }
@@ -184,7 +184,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
         }
     }
     
-    var selfUI : UIWindow{
+    public var selfUI : UIWindow{
         set(value){
             _selfUI = value
         }
@@ -193,23 +193,23 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
         }
     }
     
-    var cardNumber : String {
+    public var cardNumber : String {
         get{ return _cardNumber }
     }
     
-    var cardName : String{
+    public var cardName : String{
         get{ return _cardName }
     }
     
-    var selectMonth : Int{
+    public var selectMonth : Int{
         get{ return _selectMonth }
     }
     
-    var selectYear : Int{
+    public var selectYear : Int{
         get{ return _selectYear }
     }
     
-    var secureCode: String{
+    public  var secureCode: String{
         get{ return _secureCode }
     }
     
