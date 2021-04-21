@@ -164,6 +164,9 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     private var _selectYear : Int!
     private var _secureCode : String!
     
+    public func sendBack(){
+        //
+    }
     
     public var cardNumber : String {
         get{ return _cardNumber }
@@ -360,7 +363,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     
     override public func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+        self.sendBack()
         NotificationCenter().removeObserver(self, name: NotificationKeyboardWillShowFrameNotification, object: nil)
     }
     
