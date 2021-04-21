@@ -163,7 +163,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     private var _selectMonth : Int!
     private var _selectYear : Int!
     private var _secureCode : String!
-    private var _oldUIView : UIViewController!,_nowUIView : UIViewController!
+    private var _oldUIView : UIViewController!
     private var _selfUI : UIWindow!
     
     public var oldUIView : UIViewController{
@@ -172,15 +172,6 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
         }
         get{
             return _oldUIView
-        }
-    }
-    
-    public var nowUIView : UIViewController{
-        set(value){
-            _nowUIView = value
-        }
-        get{
-            return _nowUIView
         }
     }
     
@@ -216,7 +207,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     
     
     func closeAction(){
-        oldUIView = nowUIView
+        selfUI.window?.rootViewController = oldUIView
         selfUI.makeKeyAndVisible()
     }
     
