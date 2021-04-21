@@ -158,7 +158,31 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     @IBOutlet var cardBrandIconImageView: UIImageView!
     @IBOutlet var cvvInfoButton: UIButton!
     
-    //static var
+    private var _cardNumber : String!
+    private var _cardName : String!
+    private var _selectMonth : Int!
+    private var _selectYear : Int!
+    private var _secureCode : String!
+    
+    var cardNumber : String {
+        get{ return _cardNumber }
+    }
+    
+    var cardName : String{
+        get{ return _cardName }
+    }
+    
+    var selectMonth : Int{
+        get{ return _selectMonth }
+    }
+    
+    var selectYear : Int{
+        get{ return _selectYear }
+    }
+    
+    var secureCode: String{
+        get{ return _secureCode }
+    }
     
     @IBOutlet var requestingIndicatorView: UIActivityIndicatorView!
     @objc public static let defaultErrorMessageTextColor = UIColor.error
@@ -393,14 +417,23 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
         os_log("Requesting to create token", log: uiLogObject, type: .info)
         
         startActivityIndicator()
+        _cardName = cardNameTextField.text ?? ""
+        _cardNumber = cardNumberTextField.pan.number
+        _selectMonth = expiryDateTextField.selectedMonth ?? 0
+        _selectYear = expiryDateTextField.selectedYear ?? 0
+        _secureCode = secureCodeTextField.text ?? ""
         let request = Request<Token>(
-            name: cardNameTextField.text ?? "",
+            name: _cardName,
             pan: cardNumberTextField.pan,
-            expirationMonth: expiryDateTextField.selectedMonth ?? 0,
-            expirationYear: expiryDateTextField.selectedYear ?? 0,
-            securityCode: secureCodeTextField.text ?? ""
+            expirationMonth: _selectMonth,
+            expirationYear: _selectYear,
+            securityCode: _secureCode
         )
         
+        print("Card Number : \(_cardNumber)");
+        print("Card Name : \(_cardName)");
+        print("Card EXP : \(_selectMonth)/\(_selectYear)")
+        print("SecureCode : \(_secureCode)")
         let client = Client(publicKey: publicKey)
         client.send(request, completionHandler: { [weak self] (result) in
             guard let strongSelf = self else { return }
@@ -408,20 +441,8 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
             strongSelf.stopActivityIndicator()
             switch result {
             case let .success(token):
-                print("Credit Card Form's Request succeed %{private}@, trying to notify the delegate")
-                os_log("Credit Card Form's Request succeed %{private}@, trying to notify the delegate", log: uiLogObject, type: .default, token.id)
-                if let delegate = strongSelf.delegate {
-                    delegate.creditCardFormViewController(strongSelf, didSucceedWithToken: token)
-                    print("Credit Card Form Create Token succeed delegate notified")
-                    os_log("Credit Card Form Create Token succeed delegate notified", log: uiLogObject, type: .default)
-                } else if let delegate = strongSelf.__delegate {
-                    delegate.creditCardFormViewController(strongSelf, didSucceedWithToken: __OmiseToken(token: token))
-                    print("Credit Card Form Create Token succeed delegate notified")
-                    os_log("Credit Card Form Create Token succeed delegate notified", log: uiLogObject, type: .default)
-                } else {
-                    print("There is no Credit Card Form's delegate to notify about the created token")
-                    os_log("There is no Credit Card Form's delegate to notify about the created token", log: uiLogObject, type: .default)
-                }
+                print("Credit Card Form's Request succeed \(token.id), trying to notify the delegate")
+                self?.navigationController?.popViewController(animated: true)
             case let .failure(err):
                 strongSelf.handleError(err)
             }
