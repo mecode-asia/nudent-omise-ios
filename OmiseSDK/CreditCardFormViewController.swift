@@ -158,6 +158,8 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
     @IBOutlet var cardBrandIconImageView: UIImageView!
     @IBOutlet var cvvInfoButton: UIButton!
     
+    //static var
+    
     @IBOutlet var requestingIndicatorView: UIActivityIndicatorView!
     @objc public static let defaultErrorMessageTextColor = UIColor.error
 
@@ -406,14 +408,18 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
             strongSelf.stopActivityIndicator()
             switch result {
             case let .success(token):
+                print("Credit Card Form's Request succeed %{private}@, trying to notify the delegate")
                 os_log("Credit Card Form's Request succeed %{private}@, trying to notify the delegate", log: uiLogObject, type: .default, token.id)
                 if let delegate = strongSelf.delegate {
                     delegate.creditCardFormViewController(strongSelf, didSucceedWithToken: token)
+                    print("Credit Card Form Create Token succeed delegate notified")
                     os_log("Credit Card Form Create Token succeed delegate notified", log: uiLogObject, type: .default)
                 } else if let delegate = strongSelf.__delegate {
                     delegate.creditCardFormViewController(strongSelf, didSucceedWithToken: __OmiseToken(token: token))
+                    print("Credit Card Form Create Token succeed delegate notified")
                     os_log("Credit Card Form Create Token succeed delegate notified", log: uiLogObject, type: .default)
                 } else {
+                    print("There is no Credit Card Form's delegate to notify about the created token")
                     os_log("There is no Credit Card Form's delegate to notify about the created token", log: uiLogObject, type: .default)
                 }
             case let .failure(err):
