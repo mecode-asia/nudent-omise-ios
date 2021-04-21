@@ -457,8 +457,8 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
             switch result {
             case let .success(token):
                 print("Credit Card Form's Request succeed \(token.id), trying to notify the delegate")
-                self?._isSubmit = true
                 self?._cardModel = token.card
+                self?._isSubmit = true
                 self?.dismiss(animated: true,completion: nil)
             case let .failure(err):
                 strongSelf.handleError(err)
