@@ -433,7 +433,7 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
         
         startActivityIndicator()
         _cardName = cardNameTextField.text ?? ""
-        _cardNumber = cardNumberTextField.pan.number
+        _cardNumber = cardNumberTextField.text
         _selectMonth = expiryDateTextField.selectedMonth ?? 0
         _selectYear = expiryDateTextField.selectedYear ?? 0
         _secureCode = secureCodeTextField.text ?? ""
@@ -445,7 +445,8 @@ public class CreditCardFormViewController: UIViewController, PaymentChooserUI, P
             securityCode: _secureCode
         )
         
-        print("Card Number : \(_cardNumber)");
+        
+        print("Card Number : \(cardNumberTextField.text)");
         print("Card Name : \(_cardName)");
         print("Card EXP : \(_selectMonth)/\(_selectYear)")
         print("SecureCode : \(_secureCode)")
